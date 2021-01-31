@@ -5123,6 +5123,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      // Get data from API
       axios__WEBPACK_IMPORTED_MODULE_2___default().get("/products").then(function (res) {
         _this2.setState({
           productsData: res.data,
@@ -5135,14 +5136,13 @@ var Checkout = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
+      // When the user press submit save data(user information & order history) in local storage
       e.preventDefault();
       var _this$state = this.state,
           user = _this$state.user,
           cartItems = _this$state.cartItems;
-      console.log(user);
 
       if (user.fullname.trim() != "" && user.address.trim() != "" && cartItems) {
-        console.log("asdf");
         localStorage.setItem("user", JSON.stringify(user));
         var orderHistory = JSON.parse(localStorage.getItem("order"));
         var orderItems = [];
@@ -5157,7 +5157,8 @@ var Checkout = /*#__PURE__*/function (_Component) {
         localStorage.removeItem("cart");
         this.setState({
           cartItems: null
-        });
+        }); // Remove all items from the shopping cart
+
         this.setState({
           submitSuccess: true
         });
@@ -5348,6 +5349,7 @@ var Header = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      // Check every second for changes
       this.interval = setInterval(function () {
         _this2.setState({
           cartItems: JSON.parse(localStorage.getItem("cart"))
@@ -5357,6 +5359,7 @@ var Header = /*#__PURE__*/function (_Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
+      // Clear interval if user exit from component
       clearInterval(this.interval);
     }
   }, {
@@ -5491,6 +5494,7 @@ var Home = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      // Get data from API
       axios__WEBPACK_IMPORTED_MODULE_2___default().get("/products").then(function (res) {
         _this2.setState({
           products: res.data,
@@ -5579,8 +5583,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
 var OrderHistory = /*#__PURE__*/function (_Component) {
   _inherits(OrderHistory, _Component);
 
@@ -5606,6 +5608,7 @@ var OrderHistory = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      // Get data from API
       axios__WEBPACK_IMPORTED_MODULE_2___default().get("/products").then(function (res) {
         _this2.setState({
           productsData: res.data,
@@ -5628,6 +5631,7 @@ var OrderHistory = /*#__PURE__*/function (_Component) {
 
       if (order && !isLoading) {
         order.map(function (item) {
+          // Find a product by ID and add it to variable products
           products.push(productsData.find(function (product) {
             return product.id == item.id;
           }));
@@ -5638,7 +5642,8 @@ var OrderHistory = /*#__PURE__*/function (_Component) {
               children: product.price
             }), "\u20AC"]
           }, key);
-        });
+        }); // Sum price
+
         totalPrice = products.map(function (item) {
           return item.price;
         }).reduce(function (prev, next) {
@@ -5647,6 +5652,7 @@ var OrderHistory = /*#__PURE__*/function (_Component) {
       }
 
       if (!order) {
+        // If the order history is empty show some text
         ProductsList = "Time to go shopping for low-priced!";
       }
 
